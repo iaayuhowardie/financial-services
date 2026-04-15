@@ -72,10 +72,22 @@ working" cause.
 
 | URL | Where CORS lives |
 |---|---|
-| `bootstrap_url` | Your handler's response headers. Behind API Gateway / Cloud Functions, also configure the `OPTIONS` preflight — the browser sends one before any request with custom headers. |
+| `bootstrap_url` | Your handler's response headers. Behind API Gateway / Cloud Functions, also configure the `OPTIONS` preflight — the browser sends one before any request with custom headers. See the recommended preflight response below. |
 | `mcp_servers[].url` | The MCP server itself. Public ones (Linear, Atlassian) already allow it. Internal ones almost certainly don't until you add it. |
 | `skills[].url` | **The bucket, not the URL.** Presigned URLs auth the request — they don't grant CORS. S3 needs a bucket CORS config, GCS needs `gsutil cors set`, Azure needs blob service CORS rules. |
 | `otlp_endpoint` | Your OTEL collector's HTTP receiver. Most collectors default to same-origin only — set `cors.allowed_origins` on the OTLP/HTTP receiver. |
+
+For `bootstrap_url`, the recommended preflight response is:
+
+```
+Access-Control-Allow-Origin:  https://pivot.claude.ai
+Access-Control-Allow-Methods: GET
+Access-Control-Allow-Headers: Authorization, X-Claude-User-Agent, *
+```
+
+Allowing `*` for request headers is safe here — security comes from the Entra
+token, not header filtering — and keeps preflights working if the add-in adds
+headers in future. Keep `Allow-Origin` pinned to `https://pivot.claude.ai`.
 
 The presigned-URL one bites hardest because `curl` works (curl ignores CORS),
 the signature is valid, the object exists, and the skill still doesn't load.
@@ -103,9 +115,15 @@ a failed request with no response body and a console error naming the origin.
 ## Request
 
 ```
-GET <bootstrap_url>                         # after interpolation
-Authorization: Bearer <entra_id_token>      # only if entra_sso=1 in manifest
+GET <bootstrap_url>                            # after interpolation
+Authorization: Bearer <entra_id_token>         # only if entra_sso=1 in manifest
+X-Claude-User-Agent: claude-<app>/<version>    # always sent
 ```
+
+`X-Claude-User-Agent` identifies which Office host the add-in is running in.
+`<app>` is one of `word`, `excel`, or `powerpoint`; `<version>` is the add-in
+build (e.g. `claude-excel/1.4.2`). Use it to return different skills or MCP
+servers per Office product, or to gate the add-in to specific hosts for a user.
 
 Without `entra_sso=1` there's no Authorization header — the request is
 anonymous from the add-in's side. That's fine if the endpoint sits behind
@@ -217,6 +235,10 @@ Set this when you're vending short-lived tokens. Don't set it as a
 keepalive — if nothing in the response expires, the refetch is wasted.
 
 ## Scaffolding a handler
+
+A runnable Python/FastAPI reference with RBAC for `skills` and `mcp_servers`
+lives at [`examples/python-bootstrap/`](../examples/python-bootstrap/) — point
+them there if they want something to copy.
 
 When they want one built, write it for them. The contract above is what
 you're coding against. Get these right:
