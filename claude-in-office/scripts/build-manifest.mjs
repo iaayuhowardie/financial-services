@@ -53,13 +53,17 @@ const KEYS = {
     pattern: /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i,
     hint: "your Entra app registration's Application (client) ID — overrides the default multi-tenant app",
   },
+  entra_scope: {
+    pattern: /^(api|https):\/\/\S+\/[\w.-]+$/i,
+    hint: "scope URI for your Entra-protected API, e.g. api://<your-app-guid>/.default — requires graph_client_id",
+  },
   allow_1p: {
     pattern: /^[01]$/,
     hint: "1 allows Claude.ai OAuth alongside 3P (default: locked when other keys present)",
   },
 };
 
-const NEEDS_ENTRA = ["aws_role_arn", "graph_client_id"];
+const NEEDS_ENTRA = ["aws_role_arn", "graph_client_id", "entra_scope"];
 
 async function main() {
   const [out, ...pairs] = process.argv.slice(2);
@@ -89,7 +93,10 @@ async function main() {
 
   const needsEntra = NEEDS_ENTRA.find((k) => params.has(k));
   if (needsEntra && params.get("entra_sso") !== "1") {
-    throw new Error(`${needsEntra} requires entra_sso=1 (the add-in needs an Entra ID token to use it)`);
+    throw new Error(`${needsEntra} requires entra_sso=1 (the add-in needs an Entra token to use it)`);
+  }
+  if (params.has("entra_scope") && !params.has("graph_client_id")) {
+    throw new Error("entra_scope requires graph_client_id (the scope is requested as your own Entra app, not the default)");
   }
 
   // URLSearchParams joins with `&`; XML attribute values need it escaped.

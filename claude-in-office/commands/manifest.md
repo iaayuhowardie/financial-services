@@ -44,9 +44,22 @@ the app in Entra as a single-tenant **Single-page application** with redirect
 URI `https://pivot.claude.ai/msal-redirect.html`. You handle consent on your
 own app — [consent](consent.md) covers the default app only.
 
-`graph_client_id` is manifest-only — the add-in needs it to initialize NAA
-*before* it can read extension attrs or call your bootstrap endpoint, so it
-can't arrive through either of those layers.
+**Send an access token instead of the ID token.** With `graph_client_id` alone
+the add-in still sends an *ID token* to your bootstrap endpoint — `aud` is your
+app's GUID, but there's no `scp` claim. If your endpoint is a standard OAuth2
+protected resource that validates `aud` + `scp`, or an RFC 8693 token-exchange
+service, set `entra_scope=api://<your-app-guid>/<scope>` and the add-in
+requests an *access token* for that scope instead. The Bearer it sends carries
+`aud` = your API's App ID URI and `scp` = the granted scope. In Entra, on your
+app registration: **Expose an API** (Application ID URI `api://<guid>`), add a
+scope such as `access_as_user`, and grant the same app delegated permission to
+it, then grant admin consent for the tenant. `/.default` (requests all
+consented scopes) also works.
+
+`entra_scope` requires `graph_client_id` — the build script enforces this. Both
+are manifest-only: the add-in needs them to initialize NAA *before* it can read
+extension attrs or call your bootstrap endpoint, so neither can arrive through
+those layers. Leave `entra_scope` unset and the ID token is sent.
 
 ## Bootstrap endpoint
 

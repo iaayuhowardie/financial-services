@@ -116,7 +116,7 @@ a failed request with no response body and a console error naming the origin.
 
 ```
 GET <bootstrap_url>                            # after interpolation
-Authorization: Bearer <entra_id_token>         # only if entra_sso=1 in manifest
+Authorization: Bearer <entra_token>            # only if entra_sso=1 in manifest
 X-Claude-User-Agent: claude-<app>/<version>    # always sent
 ```
 
@@ -137,6 +137,12 @@ With `entra_sso=1`, validate the JWT before trusting it:
 | `iss` | `https://login.microsoftonline.com/<YOUR_TENANT_ID>/v2.0` — your tenant. Reject other tenants. |
 | `exp` | Not expired. Libraries handle this; don't hand-roll it. |
 | `oid` | The user's stable object ID. This is your lookup key — email (`upn`/`preferred_username`) can change, `oid` doesn't. |
+
+If you set `entra_scope` in the [manifest](manifest.md#entra-sso), the Bearer
+is an **access token**, not an ID token. Validate `aud` = your API's
+Application ID URI (`api://<guid>`, not the client GUID) and check `scp`
+contains the scope you defined. `iss`, `exp`, `oid`, and signature verification
+are the same.
 
 Signature verification needs Microsoft's JWKS
 (`https://login.microsoftonline.com/<TENANT_ID>/discovery/v2.0/keys`). Use a
