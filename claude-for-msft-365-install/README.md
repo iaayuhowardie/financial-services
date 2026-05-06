@@ -21,3 +21,10 @@ Then inside the session: `/claude-for-msft-365-install:setup`
 | `/claude-for-msft-365-install:consent` | Azure admin consent URL for the add-in's app registration |
 | `/claude-for-msft-365-install:update-user-attrs` | Write per-user config via Microsoft Graph extension attributes |
 | `/claude-for-msft-365-install:bootstrap` | Build the bootstrap endpoint — per-user MCP servers, skills, dynamic config |
+
+## Notes (personal)
+
+- Tested against Bedrock (us-east-1) with `claude-3-5-sonnet-20241022` — works out of the box.
+- The `setup` wizard prompts for a region; defaulting to `us-east-1` saves a step if you're on AWS.
+- Run `consent` before `manifest` when setting up a net-new Azure app registration, otherwise the
+  manifest upload step will fail with a 403.
