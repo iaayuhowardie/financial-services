@@ -28,3 +28,5 @@ Then inside the session: `/claude-for-msft-365-install:setup`
 - The `setup` wizard prompts for a region; defaulting to `us-east-1` saves a step if you're on AWS.
 - Run `consent` before `manifest` when setting up a net-new Azure app registration, otherwise the
   manifest upload step will fail with a 403.
+- Also tested with `claude-3-7-sonnet-20250219` on Bedrock — works fine, noticeably better at
+  multi-step Excel formula tasks. Worth the upgrade if your org is already on the model.
