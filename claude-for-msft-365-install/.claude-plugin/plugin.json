@@ -5,5 +5,9 @@
   "author": {
     "name": "Anthropic",
     "email": "support@anthropic.com"
+  },
+  "config": {
+    "defaultProvider": "bedrock",
+    "logLevel": "warn"
   }
 }
