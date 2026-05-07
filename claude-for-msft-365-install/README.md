@@ -30,3 +30,5 @@ Then inside the session: `/claude-for-msft-365-install:setup`
   manifest upload step will fail with a 403.
 - Also tested with `claude-3-7-sonnet-20250219` on Bedrock — works fine, noticeably better at
   multi-step Excel formula tasks. Worth the upgrade if your org is already on the model.
+- Vertex AI (us-central1) also works — had to enable the Vertex AI API in the GCP project first,
+  easy to miss. Use `claude-3-5-sonnet-v2@20241022` as the model ID for Vertex.
