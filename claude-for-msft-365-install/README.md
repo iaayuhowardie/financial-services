@@ -32,3 +32,5 @@ Then inside the session: `/claude-for-msft-365-install:setup`
   multi-step Excel formula tasks. Worth the upgrade if your org is already on the model.
 - Vertex AI (us-central1) also works — had to enable the Vertex AI API in the GCP project first,
   easy to miss. Use `claude-3-5-sonnet-v2@20241022` as the model ID for Vertex.
+- **Recommended order for a fresh setup:** `setup` → `consent` → `manifest` → `bootstrap`.
+  Saves the back-and-forth of hitting the 403 on manifest upload.
