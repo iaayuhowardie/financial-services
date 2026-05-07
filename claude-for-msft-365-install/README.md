@@ -34,3 +34,6 @@ Then inside the session: `/claude-for-msft-365-install:setup`
   easy to miss. Use `claude-3-5-sonnet-v2@20241022` as the model ID for Vertex.
 - **Recommended order for a fresh setup:** `setup` → `consent` → `manifest` → `bootstrap`.
   Saves the back-and-forth of hitting the 403 on manifest upload.
+- If you're re-running `bootstrap` after changing per-user config, the old MCP server entries
+  don't get cleaned up automatically — worth manually checking the Graph extension attributes
+  with `update-user-attrs` afterward to avoid stale config causing weird behavior.
