@@ -9,6 +9,8 @@ Everything here is available **two ways from one source**: install it as a [Clau
 
 > [!NOTE]
 > **Personal fork:** I'm primarily using this for equity research workflows (Market Researcher + Earnings Reviewer). The PE/fund-admin agents are less relevant to my use case, so I may trim those over time.
+>
+> **My setup:** Focused on tech/semiconductor sector coverage. I've set the default peer group size to 8 (up from 5) and prefer earnings notes in bullet-point format rather than prose — see notes in the relevant plugin configs.
 
 What's in the repo:
 
@@ -29,5 +31,4 @@ Each agent plugin is **self-contained** — it bundles the skills it uses, so in
 | | **[Earnings Reviewer](./plugins/agent-plugins/earnings-reviewer)** | Earnings call + filings → model update → note draft |
 | | **[Model Builder](./plugins/agent-plugins/model-builder)** | DCF, LBO, 3-statement, comps — live in Excel |
 | **Fund admin & finance ops** | **[Valuation Reviewer](./plugins/agent-plugins/valuation-reviewer)** | Ingests GP packages, runs valuation template, stages LP reporting |
-| | **[GL Reconciler](./plugins/agent-plugins/gl-reconciler)** | Finds breaks, traces root cause, routes for sign-off |
-| | **[Month-End Closer](./plugins/agent-plugins/month-end-closer)** | Accruals, roll-forwards, varianc
+| | *
