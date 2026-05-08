@@ -3,6 +3,10 @@
 This package provides tools and utilities for integrating Claude AI
 into financial services workflows, including document analysis,
 risk assessment, and compliance checking.
+
+Personal fork notes:
+- Using this for learning Claude API integration patterns
+- See examples/ directory for my usage experiments
 """
 
 __version__ = "0.1.0"
