@@ -11,6 +11,8 @@ Everything here is available **two ways from one source**: install it as a [Clau
 > **Personal fork:** I'm primarily using this for equity research workflows (Market Researcher + Earnings Reviewer). The PE/fund-admin agents are less relevant to my use case, so I may trim those over time.
 >
 > **My setup:** Focused on tech/semiconductor sector coverage. I've set the default peer group size to 8 (up from 5) and prefer earnings notes in bullet-point format rather than prose — see notes in the relevant plugin configs.
+>
+> **Earnings Reviewer note:** I've also bumped the default lookback for earnings history from 4 quarters to 8 quarters — useful for spotting longer-term margin trends in semis where cycle timing matters.
 
 What's in the repo:
 
@@ -29,6 +31,4 @@ Each agent plugin is **self-contained** — it bundles the skills it uses, so in
 | | **[Meeting Prep Agent](./plugins/agent-plugins/meeting-prep-agent)** | Briefing pack before every client meeting |
 | **Research & modeling** | **[Market Researcher](./plugins/agent-plugins/market-researcher)** | Sector or theme → industry overview, competitive landscape, peer comps, ideas shortlist |
 | | **[Earnings Reviewer](./plugins/agent-plugins/earnings-reviewer)** | Earnings call + filings → model update → note draft |
-| | **[Model Builder](./plugins/agent-plugins/model-builder)** | DCF, LBO, 3-statement, comps — live in Excel |
-| **Fund admin & finance ops** | **[Valuation Reviewer](./plugins/agent-plugins/valuation-reviewer)** | Ingests GP packages, runs valuation template, stages LP reporting |
-| | *
+| | **[Model Builder](./plugins/agent-plugins/model-builder
